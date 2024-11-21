@@ -131,21 +131,18 @@ public final class RootStore {
       }
 
       guard !tasks.isEmpty else { return nil }
-      return Task { @MainActor in
-        await withTaskCancellationHandler {
-          var index = tasks.startIndex
-          while index < tasks.endIndex {
-            defer { index += 1 }
-            await tasks[index].value
-          }
-        } onCancel: {
-          var index = tasks.startIndex
-          while index < tasks.endIndex {
-            defer { index += 1 }
-            tasks[index].cancel()
-          }
+
+      // Manually handle the task cancellation
+      let task = Task<Void, Never> { @MainActor in
+        var cancelled = false
+        var index = tasks.startIndex
+        while index < tasks.endIndex {
+          defer { index += 1 }
+          if cancelled { tasks[index].cancel() }
+          await tasks[index].value
         }
       }
+      return task
     }
     return _withoutPerceptionChecking {
       open(reducer: self.reducer)

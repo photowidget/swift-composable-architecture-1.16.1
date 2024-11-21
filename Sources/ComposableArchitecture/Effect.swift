@@ -263,20 +263,56 @@ extension Effect {
         )
       )
     case let (.run(lhsPriority, lhsOperation), .run(rhsPriority, rhsOperation)):
-      return Self(
-        operation: .run { send in
-          await withTaskGroup(of: Void.self) { group in
-            group.addTask(priority: lhsPriority) {
-              await lhsOperation(send)
-            }
-            group.addTask(priority: rhsPriority) {
-              await rhsOperation(send)
+      func isExactlyiOS180() -> Bool {
+        if #available(iOS 18.0, *) {
+          let osVersion = ProcessInfo.processInfo.operatingSystemVersion
+          if osVersion.majorVersion == 18 && osVersion.minorVersion == 0 {
+            // 정확히 iOS 18.0
+            return true
+          } else {
+            // iOS 18.0 이상 (18.0 초과)
+            return false
+          }
+        } else {
+          // iOS 18.0 미만
+          return false
+        }
+      }
+      
+      if !isExactlyiOS180() {
+        // iOS 18.0 이 아님
+        return Self(
+          operation: .run { send in
+            await withTaskGroup(of: Void.self) { group in
+              group.addTask(priority: lhsPriority) {
+                await lhsOperation(send)
+              }
+              group.addTask(priority: rhsPriority) {
+                await rhsOperation(send)
+              }
             }
           }
-        }
-      )
+        )
+      } else {
+        // 정확히 iOS 18.0
+        return Self(
+          operation: .run { send in
+            // 각 작업을 독립적으로 실행하는 Task
+            let lhsTask = Task(priority: lhsPriority) {
+              await lhsOperation(send)
+            }
+            let rhsTask = Task(priority: rhsPriority) {
+              await rhsOperation(send)
+            }
+            // 작업들이 모두 완료되기를 기다림
+            await lhsTask.value
+            await rhsTask.value
+          }
+        )
+      }
     }
   }
+
 
   /// Concatenates a variadic list of effects together into a single effect, which runs the effects
   /// one after the other.

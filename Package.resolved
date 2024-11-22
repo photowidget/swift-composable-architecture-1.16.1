@@ -4,7 +4,7 @@
     {
       "identity" : "combine-schedulers",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/combine-schedulers",
+      "location" : "https://github.com/photowidget/combine-schedulers-1.0.2",
       "state" : {
         "revision" : "9fa31f4403da54855f1e2aeaeff478f4f0e40b13",
         "version" : "1.0.2"
@@ -22,7 +22,7 @@
     {
       "identity" : "swift-clocks",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-clocks",
+      "location" : "https://github.com/photowidget/swift-clocks-1.0.5",
       "state" : {
         "revision" : "b9b24b69e2adda099a1fa381cda1eeec272d5b53",
         "version" : "1.0.5"
@@ -40,10 +40,10 @@
     {
       "identity" : "swift-concurrency-extras",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-concurrency-extras",
+      "location" : "https://github.com/photowidget/swift-concurrency-extras-1.3.0",
       "state" : {
         "revision" : "6054df64b55186f08b6d0fd87152081b8ad8d613",
-        "version" : "1.2.0"
+        "version" : "1.3.0"
       }
     },
     {
@@ -58,10 +58,10 @@
     {
       "identity" : "swift-dependencies",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-dependencies",
+      "location" : "https://github.com/photowidget/swift-dependencies-1.6.0",
       "state" : {
         "revision" : "fd1fb25b68fdb9756cd61d23dbd9e2614b340085",
-        "version" : "1.4.0"
+        "version" : "1.6.0"
       }
     },
     {
@@ -103,7 +103,7 @@
     {
       "identity" : "swift-navigation",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-navigation",
+      "location" : "https://github.com/photowidget/swift-navigation-2.2.2",
       "state" : {
         "revision" : "16a27ab7ae0abfefbbcba73581b3e2380b47a579",
         "version" : "2.2.2"

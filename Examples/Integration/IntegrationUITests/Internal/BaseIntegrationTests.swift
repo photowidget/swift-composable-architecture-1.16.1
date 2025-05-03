@@ -1,7 +1,6 @@
 import Accessibility
 import CustomDump
 @preconcurrency import InlineSnapshotTesting
-import IssueReporting
 import XCTest
 
 class BaseIntegrationTests: XCTestCase {

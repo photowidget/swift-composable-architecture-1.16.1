@@ -1,5 +1,4 @@
 import Foundation
-import IssueReporting
 
 extension Notification.Name {
   @_documentation(visibility: private)

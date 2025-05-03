@@ -4,7 +4,6 @@ import ConcurrencyExtras
 import CustomDump
 @_spi(Beta) import Dependencies
 import Foundation
-import IssueReporting
 
 /// A testable runtime for a reducer.
 ///

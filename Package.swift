@@ -44,7 +44,6 @@ let package = Package(
         .product(name: "Dependencies", package: "swift-dependencies-1.6.0"),
         .product(name: "DependenciesMacros", package: "swift-dependencies-1.6.0"),
         .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
-        .product(name: "IssueReporting", package: "xctest-dynamic-overlay"),
         .product(name: "OrderedCollections", package: "swift-collections"),
         .product(name: "Perception", package: "swift-perception"),
         .product(name: "SwiftUINavigation", package: "swift-navigation-2.2.2"),
@@ -58,7 +57,6 @@ let package = Package(
       name: "ComposableArchitectureTests",
       dependencies: [
         "ComposableArchitecture",
-        .product(name: "IssueReportingTestSupport", package: "xctest-dynamic-overlay"),
       ]
     ),
     .macro(

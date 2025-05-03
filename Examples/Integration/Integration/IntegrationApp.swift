@@ -1,5 +1,4 @@
 @_spi(Logging) import ComposableArchitecture
-import IssueReporting
 import SwiftUI
 import TestCases
 

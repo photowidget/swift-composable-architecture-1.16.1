@@ -28,7 +28,6 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-macro-testing", from: "0.2.0"),
     .package(url: "https://github.com/photowidget/swift-navigation-2.2.2", branch: "release/2.2.2"),
     .package(url: "https://github.com/pointfreeco/swift-perception", from: "1.3.4"),
-    .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.3.0"),
     .package(url: "https://github.com/swiftlang/swift-docc-plugin", from: "1.0.0"),
     .package(url: "https://github.com/swiftlang/swift-syntax", "509.0.0"..<"601.0.0-prerelease"),
   ],
@@ -44,7 +43,6 @@ let package = Package(
         .product(name: "Dependencies", package: "swift-dependencies-1.6.0"),
         .product(name: "DependenciesMacros", package: "swift-dependencies-1.6.0"),
         .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
-        .product(name: "IssueReporting", package: "xctest-dynamic-overlay"),
         .product(name: "OrderedCollections", package: "swift-collections"),
         .product(name: "Perception", package: "swift-perception"),
         .product(name: "SwiftUINavigation", package: "swift-navigation-2.2.2"),
@@ -58,7 +56,6 @@ let package = Package(
       name: "ComposableArchitectureTests",
       dependencies: [
         "ComposableArchitecture",
-        .product(name: "IssueReportingTestSupport", package: "xctest-dynamic-overlay"),
       ]
     ),
     .macro(

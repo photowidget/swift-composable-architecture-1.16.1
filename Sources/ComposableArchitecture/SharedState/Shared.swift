@@ -1,6 +1,5 @@
 import CustomDump
 import Dependencies
-import IssueReporting
 
 #if canImport(Combine)
   import Combine

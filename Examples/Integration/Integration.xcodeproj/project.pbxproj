@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CA3A7B9D29CB61E9002CD272 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3A7B9C29CB61E9002CD272 /* TestHelpers.swift */; };
-		CA487B2C2A15185300F54A79 /* BaseIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA487B2B2A15185300F54A79 /* BaseIntegrationTests.swift */; };
 		CA4BA5E929E76A7F0004FF9D /* NavigationStackTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BA5E829E76A7F0004FF9D /* NavigationStackTestCase.swift */; };
 		CA4BA5EB29E76F110004FF9D /* LegacyNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BA5EA29E76F110004FF9D /* LegacyNavigationTests.swift */; };
 		CA595278296DF67E00B5B695 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = CA595277296DF67E00B5B695 /* ComposableArchitecture */; };
@@ -55,7 +54,6 @@
 		CAF5802729A567BB0042FB62 /* LegacyPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF5802629A567BB0042FB62 /* LegacyPresentationTests.swift */; };
 		DC140CC529E0BB2C006DF553 /* SwitchStoreTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC140CC429E0BB2C006DF553 /* SwitchStoreTestCase.swift */; };
 		DC140CC729E0E8F3006DF553 /* SwitchStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC140CC629E0E8F3006DF553 /* SwitchStoreTests.swift */; };
-		DC44CFC12C751C1E009F9FE4 /* MultipleAlertsTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC44CFBF2C751BDA009F9FE4 /* MultipleAlertsTestCase.swift */; };
 		DC6268502AD1C85E00F2E2EF /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = DC62684F2AD1C85E00F2E2EF /* InlineSnapshotTesting */; };
 		DC6268532AD1E06300F2E2EF /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = DC6268522AD1E06300F2E2EF /* InlineSnapshotTesting */; };
 		DC6E2D942AD5C56F005ACC26 /* ObservableIdentifiedListTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6E2D8D2AD5C56F005ACC26 /* ObservableIdentifiedListTestCase.swift */; };
@@ -123,7 +121,6 @@
 /* Begin PBXFileReference section */
 		CA2DBB282ACB0520009FBCC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CA3A7B9C29CB61E9002CD272 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
-		CA487B2B2A15185300F54A79 /* BaseIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseIntegrationTests.swift; sourceTree = "<group>"; };
 		CA4BA5E829E76A7F0004FF9D /* NavigationStackTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStackTestCase.swift; sourceTree = "<group>"; };
 		CA4BA5EA29E76F110004FF9D /* LegacyNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyNavigationTests.swift; sourceTree = "<group>"; };
 		CA595276296DF66B00B5B695 /* swift-composable-architecture */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "swift-composable-architecture"; path = ../..; sourceTree = "<group>"; };
@@ -170,7 +167,6 @@
 		CAF5802629A567BB0042FB62 /* LegacyPresentationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyPresentationTests.swift; sourceTree = "<group>"; };
 		DC140CC429E0BB2C006DF553 /* SwitchStoreTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchStoreTestCase.swift; sourceTree = "<group>"; };
 		DC140CC629E0E8F3006DF553 /* SwitchStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchStoreTests.swift; sourceTree = "<group>"; };
-		DC44CFBF2C751BDA009F9FE4 /* MultipleAlertsTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleAlertsTestCase.swift; sourceTree = "<group>"; };
 		DC6E2D8D2AD5C56F005ACC26 /* ObservableIdentifiedListTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableIdentifiedListTestCase.swift; sourceTree = "<group>"; };
 		DC6E2D8E2AD5C56F005ACC26 /* ObservableBasicsTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableBasicsTestCase.swift; sourceTree = "<group>"; };
 		DC6E2D8F2AD5C56F005ACC26 /* ObservableNavigationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableNavigationTestCase.swift; sourceTree = "<group>"; };
@@ -228,7 +224,6 @@
 		CA3A7B9B29CB61E3002CD272 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
-				CA487B2B2A15185300F54A79 /* BaseIntegrationTests.swift */,
 				CA3A7B9C29CB61E9002CD272 /* TestHelpers.swift */,
 			);
 			path = Internal;
@@ -365,7 +360,6 @@
 		DC44CFC02C751BEA009F9FE4 /* Test Cases */ = {
 			isa = PBXGroup;
 			children = (
-				DC44CFBF2C751BDA009F9FE4 /* MultipleAlertsTestCase.swift */,
 			);
 			path = "Test Cases";
 			sourceTree = "<group>";
@@ -604,7 +598,6 @@
 				CA4BA5E929E76A7F0004FF9D /* NavigationStackTestCase.swift in Sources */,
 				E9919D42296E47A400C8716B /* BindingsAnimationsTestBench.swift in Sources */,
 				CAE2E9232B23417000EE370B /* IfLetStoreTestCase.swift in Sources */,
-				DC44CFC12C751C1E009F9FE4 /* MultipleAlertsTestCase.swift in Sources */,
 				DCFFB8E72A156488006AF839 /* BindingLocalTestCase.swift in Sources */,
 				DC6E2D992AD5C56F005ACC26 /* ObservableOptionalTestCase.swift in Sources */,
 				CA7BDDA12ADB543400277984 /* NewContainsOldTestCase.swift in Sources */,
@@ -647,7 +640,6 @@
 				DC6E2DA62AD5C677005ACC26 /* ObservableIdentifiedListTests.swift in Sources */,
 				CAF5802729A567BB0042FB62 /* LegacyPresentationTests.swift in Sources */,
 				DCA6716B2C7CEC550086F359 /* MultipleAlertsTests.swift in Sources */,
-				CA487B2C2A15185300F54A79 /* BaseIntegrationTests.swift in Sources */,
 				CA8B2EA72AC584BE008272E0 /* SiblingTests.swift in Sources */,
 				DC6E2DA72AD5C677005ACC26 /* ObservableNavigationTests.swift in Sources */,
 				DC6E2DAA2AD5C677005ACC26 /* ObservableBasicsTests.swift in Sources */,

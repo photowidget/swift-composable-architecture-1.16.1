@@ -46,12 +46,11 @@ public struct StackState<Element> {
     _read { yield self._dictionary[id] }
     _modify { yield &self._dictionary[id] }
     set {
-      switch (self.ids.contains(id), newValue, isTesting) {
+      switch (self.ids.contains(id), newValue, false) {
       case (true, _, _), (false, .some, true):
         self._dictionary[id] = newValue
       case (false, .some, false):
-        if !isTesting {
-        }
+        break
       case (false, .none, _):
         break
       }
@@ -639,17 +638,6 @@ extension StackElementID: CustomDumpStringConvertible {
 
 extension StackElementID: ExpressibleByIntegerLiteral {
   public init(integerLiteral value: Int) {
-    if !isTesting {
-      fatalError(
-        """
-        Specifying stack element IDs by integer literal is not allowed outside of tests.
-
-        In tests, integer literal stack element IDs can be used as a shorthand to the \
-        auto-incrementing generation of the current dependency context. This can be useful when \
-        asserting against actions received by a specific element.
-        """
-      )
-    }
     self.init(generation: value)
   }
 }

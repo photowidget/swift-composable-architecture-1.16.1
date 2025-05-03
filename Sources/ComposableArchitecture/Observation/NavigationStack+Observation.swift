@@ -340,22 +340,6 @@ public struct _NavigationLinkStoreContent<State, Label: View>: View {
               (None found in view hierarchy. Is this link inside a store-powered \
               'NavigationStack'?)
               """
-          reportIssue(
-            """
-            A navigation link at "\(fileID):\(line)" is unpresentable. …
-
-              NavigationStack state element type:
-                \(elementType)
-              NavigationLink state type:
-                \(typeName(State.self))
-              NavigationLink state value:
-              \(String(customDumping: state).indent(by: 2))
-            """,
-            fileID: fileID,
-            filePath: filePath,
-            line: line,
-            column: column
-          )
         }
       }
     #else
@@ -396,33 +380,6 @@ extension Store {
     set {
       let newCount = newValue.count
       guard newCount != self.currentState.count else {
-        reportIssue(
-          """
-          A navigation stack binding at "\(fileID.rawValue):\(line)" was written to with a \
-          path that has the same number of elements that already exist in the store. A view \
-          should only write to this binding with a path that has pushed a new element onto the \
-          stack, or popped one or more elements from the stack.
-
-          This usually means the "forEach" has not been integrated with the reducer powering the \
-          store, and this reducer is responsible for handling stack actions.
-
-          To fix this, ensure that "forEach" is invoked from the reducer's "body":
-
-              Reduce { state, action in
-                // ...
-              }
-              .forEach(\\.path, action: \\.path) {
-                Path()
-              }
-
-          And ensure that every parent reducer is integrated into the root reducer that powers \
-          the store.
-          """,
-          fileID: fileID.rawValue,
-          filePath: filePath.rawValue,
-          line: line,
-          column: column
-        )
         return
       }
       if newCount > self.currentState.count, let component = newValue.last {

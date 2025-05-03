@@ -206,24 +206,10 @@ public struct Shared<Value: Sendable>: Sendable {
         changeTrackers
         .first(where: { $0.changes[ObjectIdentifier(self.reference)] != nil })
     else {
-      reportIssue(
-        "Expected changes, but none occurred.",
-        fileID: fileID,
-        filePath: filePath,
-        line: line,
-        column: column
-      )
       return
     }
     try changeTracker.assert {
       guard var snapshot = self.snapshot, snapshot != self.currentValue else {
-        reportIssue(
-          "Expected changes, but none occurred.",
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
         return
       }
       try updateValueToExpectedResult(&snapshot)

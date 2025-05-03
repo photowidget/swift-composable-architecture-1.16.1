@@ -51,13 +51,6 @@ public struct StackState<Element> {
         self._dictionary[id] = newValue
       case (false, .some, false):
         if !isTesting {
-          reportIssue(
-            "Can't assign element at missing ID.",
-            fileID: fileID.rawValue,
-            filePath: filePath.rawValue,
-            line: line,
-            column: column
-          )
         }
       case (false, .none, _):
         break
@@ -139,15 +132,6 @@ public struct StackState<Element> {
         {
           description = caseName
         }
-        reportIssue(
-          """
-          Can't modify unrelated case\(description.map { " \($0.debugDescription)" } ?? "")
-          """,
-          fileID: fileID.rawValue,
-          filePath: filePath.rawValue,
-          line: line,
-          column: column
-        )
         return
       }
       self[id: id] = value.map(path.embed)
@@ -520,33 +504,6 @@ public struct _StackReducer<Base: Reducer, Destination: Reducer>: Reducer {
           .map { [toStackAction] in toStackAction.embed(.element(id: elementID, action: $0)) }
           ._cancellable(navigationIDPath: elementNavigationIDPath)
       } else {
-        reportIssue(
-          """
-          A "forEach" at "\(self.fileID):\(self.line)" received an action for a missing element. …
-
-            Action:
-              \(debugCaseOutput(destinationAction))
-
-          This is generally considered an application logic error, and can happen for a few reasons:
-
-          • A parent reducer removed an element with this ID before this reducer ran. This reducer \
-          must run before any other reducer removes an element, which ensures that element \
-          reducers can handle their actions while their state is still available.
-
-          • An in-flight effect emitted this action when state contained no element at this ID. \
-          While it may be perfectly reasonable to ignore this action, consider canceling the \
-          associated effect before an element is removed, especially if it is a long-living effect.
-
-          • This action was sent to the store while its state contained no element at this ID. To \
-          fix this make sure that actions for this reducer can only be sent from a store when \
-          its state contains an element at this id. In SwiftUI applications, use \
-          "NavigationStack.init(path:)" with a binding to a store.
-          """,
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
         destinationEffects = .none
       }
 
@@ -559,61 +516,16 @@ public struct _StackReducer<Base: Reducer, Destination: Reducer>: Reducer {
       if canPop {
         state[keyPath: self.toStackState].pop(from: id)
       } else {
-        reportIssue(
-          """
-          A "forEach" at "\(self.fileID):\(self.line)" received a "popFrom" action for a missing \
-          element. …
-
-            ID:
-              \(id)
-            Path IDs:
-              \(state[keyPath: self.toStackState].ids)
-          """,
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
       }
 
     case let .push(id, element):
       destinationEffects = .none
       if state[keyPath: self.toStackState].ids.contains(id) {
-        reportIssue(
-          """
-          A "forEach" at "\(self.fileID):\(self.line)" received a "push" action for an element it \
-          already contains. …
-
-            ID:
-              \(id)
-            Path IDs:
-              \(state[keyPath: self.toStackState].ids)
-          """,
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
         baseEffects = self.base.reduce(into: &state, action: action)
         break
       } else if DependencyValues._current.context == .test {
         let nextID = DependencyValues._current.stackElementID.peek()
         if id.generation > nextID.generation {
-          reportIssue(
-            """
-            A "forEach" at "\(self.fileID):\(self.line)" received a "push" action with an \
-            unexpected generational ID. …
-
-              Received ID:
-                \(id)
-              Expected ID:
-                \(nextID)
-            """,
-            fileID: fileID,
-            filePath: filePath,
-            line: line,
-            column: column
-          )
         } else if id.generation == nextID.generation {
           _ = DependencyValues._current.stackElementID.next()
         }

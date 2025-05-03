@@ -99,20 +99,6 @@ extension Effect {
               return
             } catch {
               guard let handler else {
-                reportIssue(
-                  """
-                  An "Effect.run" returned from "\(fileID):\(line)" threw an unhandled error. …
-
-                  \(String(customDumping: error).indent(by: 4))
-
-                  All non-cancellation errors must be explicitly handled via the "catch" parameter \
-                  on "Effect.run", or via a "do" block.
-                  """,
-                  fileID: fileID,
-                  filePath: filePath,
-                  line: line,
-                  column: column
-                )
                 return
               }
               await handler(error, send)

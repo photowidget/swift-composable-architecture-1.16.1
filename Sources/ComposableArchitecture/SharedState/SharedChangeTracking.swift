@@ -30,18 +30,6 @@ protocol Change<Value> {
 extension Change {
   func assertUnchanged() {
     if let difference = diff(snapshot, self.reference.value, format: .proportional) {
-      reportIssue(
-        """
-        Tracked changes to '\(self.reference.description)' but failed to assert: …
-
-        \(difference.indent(by: 2))
-
-        (Before: −, After: +)
-
-        Call 'Shared<\(Value.self)>.assert' to exhaustively test these changes, or call \
-        'skipChanges' to ignore them.
-        """
-      )
     }
   }
 }

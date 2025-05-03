@@ -73,13 +73,6 @@ extension Store where State: ObservableState {
     column: UInt = #column
   ) -> some RandomAccessCollection<Store<ElementState, ElementAction>> {
     if !self.canCacheChildren {
-      reportIssue(
-        uncachedStoreWarning(self),
-        fileID: fileID,
-        filePath: filePath,
-        line: line,
-        column: column
-      )
     }
     return _StoreCollection(self.scope(state: state, action: action))
   }

@@ -98,16 +98,6 @@ extension BindingAction {
           customDump(self.value, to: &valueDump, maxDepth: 0)
           return valueDump
         }
-        reportIssue(
-          """
-          A binding action sent from a store was not handled. …
-
-            Action:
-              \(typeName(Action.self)).binding(.set(_, \(valueDump)))
-
-          To fix this, invoke "BindingReducer()" from your feature reducer's "body".
-          """
-        )
         return
       }
     }

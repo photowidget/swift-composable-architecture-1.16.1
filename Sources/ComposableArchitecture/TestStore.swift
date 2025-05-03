@@ -931,30 +931,11 @@ extension TestStore where State: Equatable {
   ) async -> TestStoreTask {
     await _withIssueContext(fileID: fileID, filePath: filePath, line: line, column: column) {
       guard !self.isDismissed else {
-        reportIssue(
-          "Can't send action to dismissed test store.",
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
         return TestStoreTask(rawValue: nil, timeout: self.timeout)
       }
       if !self.reducer.receivedActions.isEmpty {
         var actions = ""
         customDump(self.reducer.receivedActions.map(\.action), to: &actions)
-        reportIssueHelper(
-          """
-          Must handle \(self.reducer.receivedActions.count) received \
-          action\(self.reducer.receivedActions.count == 1 ? "" : "s") before sending an action: …
-
-          Unhandled actions: \(actions)
-          """,
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
       }
 
       switch self.exhaustivity {
@@ -1004,13 +985,6 @@ extension TestStore where State: Equatable {
           column: column
         )
       } catch {
-        reportIssue(
-          "Threw error: \(error)",
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
       }
       // NB: Give concurrency runtime more time to kick off effects so users don't need to manually
       //     instrument their effects.
@@ -1071,13 +1045,6 @@ extension TestStore where State: Equatable {
         column: column
       )
     } catch {
-      reportIssue(
-        "Threw error: \(error)",
-        fileID: fileID,
-        filePath: filePath,
-        line: line,
-        column: column
-      )
     }
   }
 
@@ -1168,17 +1135,6 @@ extension TestStore where State: Equatable {
                   try updateStateToExpectedResult(&expectedWhenGivenPreviousState)
                 }
               } catch {
-                reportIssue(
-                  """
-                  Skipped assertions: …
-
-                  Threw error: \(error)
-                  """,
-                  fileID: fileID,
-                  filePath: filePath,
-                  line: line,
-                  column: column
-                )
               }
             }
           }
@@ -1212,17 +1168,6 @@ extension TestStore where State: Equatable {
           : updateStateToExpectedResult != nil
             ? "A state change does not match expectation"
             : "State was not expected to change, but a change occurred"
-        reportIssueHelper(
-          """
-          \(messageHeading): …
-
-          \(difference)\(postamble.isEmpty ? "" : "\n\n\(postamble)")
-          """,
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
       }
 
       @MainActor
@@ -1232,19 +1177,6 @@ extension TestStore where State: Equatable {
           expected == current,
           updateStateToExpectedResult != nil
         else { return }
-
-        reportIssueHelper(
-          """
-          Expected state to change, but no change occurred.
-
-          The trailing closure made no observable modifications to state. If no change to state is \
-          expected, omit the trailing closure.
-          """,
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
       }
       self.sharedChangeTracker.resetChanges()
     }
@@ -2037,25 +1969,11 @@ extension TestStore where State: Equatable {
     }
 
     guard !self.reducer.receivedActions.isEmpty else {
-      reportIssue(
-        failureMessage(),
-        fileID: fileID,
-        filePath: filePath,
-        line: line,
-        column: column
-      )
       return
     }
 
     if self.exhaustivity != .on {
       guard self.reducer.receivedActions.contains(where: { predicate($0.action) }) else {
-        reportIssue(
-          failureMessage(),
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
         return
       }
 
@@ -2071,18 +1989,6 @@ extension TestStore where State: Equatable {
       if !actions.isEmpty {
         var actionsDump = ""
         customDump(actions, to: &actionsDump)
-        reportIssueHelper(
-          """
-          \(actions.count) received action\
-          \(actions.count == 1 ? " was" : "s were") skipped:
-
-          \(actionsDump)
-          """,
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
       }
     }
 
@@ -2090,17 +1996,6 @@ extension TestStore where State: Equatable {
     if !predicate(receivedAction) {
       let receivedActionLater = self.reducer.receivedActions
         .contains(where: { action, _ in predicate(receivedAction) })
-      reportIssueHelper(
-        """
-        Received unexpected action\(receivedActionLater ? " before this one" : ""): …
-
-        \(unexpectedActionDescription(receivedAction))
-        """,
-        fileID: fileID,
-        filePath: filePath,
-        line: line,
-        column: column
-      )
     } else {
       let expectedState = self.state
       do {
@@ -2114,13 +2009,6 @@ extension TestStore where State: Equatable {
           column: column
         )
       } catch {
-        reportIssue(
-          "Threw error: \(error)",
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
       }
     }
     self.reducer.state = state
@@ -2174,19 +2062,6 @@ extension TestStore where State: Equatable {
             \(timeoutMessage).
             """
         }
-        reportIssue(
-          """
-          Expected to receive \(self.exhaustivity == .on ? "an action" : "a matching action"), but \
-          received none\
-          \(nanoseconds > 0 ? " after \(Double(nanoseconds)/Double(NSEC_PER_SEC)) seconds" : "").
-
-          \(suggestion)
-          """,
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
         return
       }
     }
@@ -2331,13 +2206,6 @@ extension TestStore {
     column: UInt = #column
   ) {
     if strict && self.reducer.receivedActions.isEmpty {
-      reportIssue(
-        "There were no received actions to skip.",
-        fileID: fileID,
-        filePath: filePath,
-        line: line,
-        column: column
-      )
       return
     }
     guard !self.reducer.receivedActions.isEmpty
@@ -2348,21 +2216,6 @@ extension TestStore {
     } else {
       customDump(self.reducer.receivedActions.map { $0.action }, to: &actions)
     }
-    reportIssueHelper(
-      """
-      \(self.reducer.receivedActions.count) received action\
-      \(self.reducer.receivedActions.count == 1 ? " was" : "s were") skipped:
-
-      \(actions)
-      """,
-      overrideExhaustivity: self.exhaustivity == .on
-        ? .off(showSkippedAssertions: true)
-        : self.exhaustivity,
-      fileID: fileID,
-      filePath: filePath,
-      line: line,
-      column: column
-    )
     self.reducer.state = self.reducer.receivedActions.last!.state
     self.reducer.receivedActions = []
   }
@@ -2411,13 +2264,6 @@ extension TestStore {
     column: UInt = #column
   ) {
     if strict && self.reducer.inFlightEffects.isEmpty {
-      reportIssue(
-        "There were no in-flight effects to skip.",
-        fileID: fileID,
-        filePath: filePath,
-        line: line,
-        column: column
-      )
       return
     }
     guard !self.reducer.inFlightEffects.isEmpty
@@ -2429,22 +2275,6 @@ extension TestStore {
     } else {
       customDump(self.reducer.inFlightEffects.map { $0.action.origin.action }, to: &actions)
     }
-
-    reportIssueHelper(
-      """
-      \(self.reducer.inFlightEffects.count) in-flight effect\
-      \(self.reducer.inFlightEffects.count == 1 ? " was" : "s were") cancelled, originating from:
-
-      \(actions)
-      """,
-      overrideExhaustivity: self.exhaustivity == .on
-        ? .off(showSkippedAssertions: true)
-        : self.exhaustivity,
-      fileID: fileID,
-      filePath: filePath,
-      line: line,
-      column: column
-    )
     self.reducer.inFlightEffects = []
   }
 
@@ -2455,29 +2285,7 @@ extension TestStore {
     filePath: StaticString,
     line: UInt,
     column: UInt
-  ) {
-    let exhaustivity = exhaustivity ?? self.exhaustivity
-    switch exhaustivity {
-    case .on:
-      reportIssue(message, fileID: fileID, filePath: filePath, line: line, column: column)
-    case let .off(showSkippedAssertions):
-      if showSkippedAssertions {
-        withExpectedIssue {
-          reportIssue(
-            """
-            Skipped assertions: …
-
-            \(message)
-            """,
-            fileID: fileID,
-            filePath: filePath,
-            line: line,
-            column: column
-          )
-        }
-      }
-    }
-  }
+  ) {}
 }
 
 extension TestStore {
@@ -2704,19 +2512,6 @@ public struct TestStoreTask: Hashable, Sendable {
         If you are not yet using a clock/scheduler, or cannot use a clock/scheduler, \
         \(timeoutMessage).
         """
-
-      reportIssue(
-        """
-        Expected task to finish, but it is still in-flight\
-        \(nanoseconds > 0 ? " after \(Double(nanoseconds)/Double(NSEC_PER_SEC)) seconds" : "").
-
-        \(suggestion)
-        """,
-        fileID: fileID,
-        filePath: filePath,
-        line: line,
-        column: column
-      )
     }
   }
 

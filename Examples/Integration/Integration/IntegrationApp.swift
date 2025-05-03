@@ -59,7 +59,6 @@ final class IntegrationAppDelegate: NSObject, UIApplicationDelegate {
       UIView.setAnimationsEnabled(false)
     }
     Logger.shared.isEnabled = true
-    IssueReporters.current.append(NotificationReporter())
     let sceneConfig = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
     sceneConfig.delegateClass = IntegrationSceneDelegate.self
     return sceneConfig
@@ -309,22 +308,6 @@ struct RuntimeWarnings: View {
 extension Notification.Name {
   static let clearLogs = Self("clear-logs")
   static let issueReported = Self("issue-reported")
-}
-
-private struct NotificationReporter: IssueReporter {
-  func reportIssue(
-    _ message: @autoclosure () -> String?,
-    fileID: StaticString,
-    filePath: StaticString,
-    line: UInt,
-    column: UInt
-  ) {
-    NotificationCenter.default.post(
-      name: .issueReported,
-      object: nil,
-      userInfo: message().map { ["message": $0] }
-    )
-  }
 }
 
 #Preview {

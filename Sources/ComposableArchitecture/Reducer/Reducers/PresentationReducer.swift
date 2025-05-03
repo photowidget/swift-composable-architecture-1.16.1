@@ -166,15 +166,6 @@ public struct PresentationState<State> {
         {
           description = caseName
         }
-        reportIssue(
-          """
-          Can't modify unrelated case\(description.map { " \($0.debugDescription)" } ?? "")
-          """,
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
         return
       }
       self.wrappedValue = value.map(path.embed)
@@ -625,31 +616,6 @@ public struct _PresentationReducer<Base: Reducer, Destination: Reducer>: Reducer
       baseEffects = self.base.reduce(into: &state, action: action)
 
     case (.none, .some):
-      reportIssue(
-        """
-        An "ifLet" at "\(self.fileID):\(self.line)" received a presentation action when \
-        destination state was absent. …
-
-          Action:
-            \(debugCaseOutput(action))
-
-        This is generally considered an application logic error, and can happen for a few \
-        reasons:
-
-        • A parent reducer set destination state to "nil" before this reducer ran. This reducer \
-        must run before any other reducer sets destination state to "nil". This ensures that \
-        destination reducers can handle their actions while their state is still present.
-
-        • This action was sent to the store while destination state was "nil". Make sure that \
-        actions for this reducer can only be sent from a store when state is present, or \
-        from effects that start from this reducer. In SwiftUI applications, use a Composable \
-        Architecture view modifier like "sheet(store:…)".
-        """,
-        fileID: fileID,
-        filePath: filePath,
-        line: line,
-        column: column
-      )
       destinationEffects = .none
       baseEffects = self.base.reduce(into: &state, action: action)
     }

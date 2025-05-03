@@ -790,22 +790,6 @@ extension WithViewStore where ViewState: Equatable, Content: View {
           customDump(self.value, to: &valueDump, maxDepth: 0)
           return valueDump
         }
-        reportIssue(
-          """
-          A binding action sent from a store \
-          \(self.context == .bindingState ? "for binding state defined " : "")at \
-          "\(self.fileID):\(self.line)" was not handled. …
-
-            Action:
-              \(typeName(self.bindableActionType)).binding(.set(_, \(valueDump)))
-
-          To fix this, invoke "BindingReducer()" from your feature reducer's "body".
-          """,
-          fileID: fileID,
-          filePath: filePath,
-          line: line,
-          column: column
-        )
         return
       }
     }

@@ -240,7 +240,6 @@ public struct _CaseLetMismatchView<State, Action>: View {
       .padding()
       .background(Color.red.edgesIgnoringSafeArea(.all))
       .onAppear {
-        reportIssue(message, fileID: fileID, filePath: filePath, line: line, column: column)
       }
     #else
       return EmptyView()

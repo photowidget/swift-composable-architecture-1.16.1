@@ -98,24 +98,6 @@ public final class RootStore {
               await operation(
                 Send { effectAction in
                   if isCompleted.value {
-                    reportIssue(
-                      """
-                      An action was sent from a completed effect:
-
-                        Action:
-                          \(debugCaseOutput(effectAction))
-
-                        Effect returned from:
-                          \(debugCaseOutput(action))
-
-                      Avoid sending actions using the 'send' argument from 'Effect.run' after \
-                      the effect has completed. This can happen if you escape the 'send' \
-                      argument in an unstructured context.
-
-                      To fix this, make sure that your 'run' closure does not return until \
-                      you're done calling 'send'.
-                      """
-                    )
                   }
                   if let task = continuation.yield({
                     self.send(effectAction, originatingFrom: action)

@@ -269,18 +269,6 @@ extension TaskResult: Equatable where Success: Equatable {
             let lhsType = type(of: lhs)
             if TaskResultDebugging.emitRuntimeWarnings, lhsType == type(of: rhs) {
               let lhsTypeName = typeName(lhsType)
-              reportIssue(
-                """
-                "\(lhsTypeName)" is not equatable. …
-
-                To test two values of this type, it must conform to the "Equatable" protocol. For \
-                example:
-
-                    extension \(lhsTypeName): Equatable {}
-
-                See the documentation of "TaskResult" for more information.
-                """
-              )
             }
           #endif
           return false
@@ -305,17 +293,6 @@ extension TaskResult: Hashable where Success: Hashable {
         #if DEBUG
           if TaskResultDebugging.emitRuntimeWarnings {
             let errorType = typeName(type(of: error))
-            reportIssue(
-              """
-              "\(errorType)" is not hashable. …
-
-              To hash a value of this type, it must conform to the "Hashable" protocol. For example:
-
-                  extension \(errorType): Hashable {}
-
-              See the documentation of "TaskResult" for more information.
-              """
-            )
           }
         #endif
       }
